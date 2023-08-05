@@ -2,10 +2,17 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { ProductComponent, ProductsComponent, CartComponent } from './components';
-import { ProductFacadeService, ProductService } from './services';
+import { CartFacadeService, ProductFacadeService, ProductService } from './services';
+import { CartStore, ProductAction, ProductQuery, ProductsStore, CartAction, CartQuery } from './store';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [BrowserModule],
+  imports: [
+    BrowserModule,
+    CommonModule,
+    FormsModule,
+  ],
   declarations: [
     AppComponent,
     ProductComponent,
@@ -15,6 +22,13 @@ import { ProductFacadeService, ProductService } from './services';
   providers: [
     ProductService,
     ProductFacadeService,
+    CartFacadeService,
+    ProductAction,
+    ProductQuery,
+    ProductsStore,
+    CartAction,
+    CartQuery,
+    CartStore,
   ],
   bootstrap: [AppComponent],
 })
