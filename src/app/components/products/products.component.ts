@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IProduct } from '../../interfaces';
 import { CartFacadeService, ProductFacadeService } from '../../services';
@@ -10,11 +10,14 @@ import { CartFacadeService, ProductFacadeService } from '../../services';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductsComponent implements OnInit {
+  newProductName: string;
+  isAdding = false;
   products$: Observable<IProduct[]>;
 
   constructor(
     private productFacade: ProductFacadeService,
     private cartFacade: CartFacadeService,
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -32,5 +35,16 @@ export class ProductsComponent implements OnInit {
 
   addToCart(productId: IProduct['id']): void {
     this.cartFacade.addToCart(productId);
+  }
+
+  toggleAdding(): void {
+    this.isAdding = !this.isAdding;
+    this.newProductName = '';
+    this.cd.detectChanges();
+  }
+
+  addProduct(): void {
+    this.productFacade.addProduct(this.newProductName);
+    this.toggleAdding();
   }
 }

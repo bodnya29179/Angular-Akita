@@ -17,7 +17,7 @@ export class ProductService {
 
   addProduct(productName: IProduct['name']): Observable<IProduct> {
     const products = this.products$.value;
-    const lastIndex = parseInt(products.reverse()[0].id.split('').reverse().join(''));
+    const lastIndex = products.length ? parseInt(products.reverse()[0].id.split('').reverse().join('')) : 0;
     const id = `fake-id${ lastIndex + 1 }`;
     const product: IProduct = { id, name: productName };
 

@@ -1,3 +1,13 @@
+<div>
+  <button [disabled]="isAdding" (click)="!isAdding && toggleAdding()">Add new product</button>
+</div>
+
+<div *ngIf="isAdding">
+  <input type="text" [(ngModel)]="newProductName" placeholder="New product name">
+  <button (click)="toggleAdding()">Cancel</button>
+  <button (click)="addProduct()">Save</button>
+</div>
+
 <ng-container *ngIf="(products$ | async) as products; else loading">
   <ng-container
     [ngTemplateOutlet]="products.length ? productList : emptyState"
