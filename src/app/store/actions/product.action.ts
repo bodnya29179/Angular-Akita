@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IProductsState, ProductsStore } from '../stores/products.store';
+import { ProductsStore } from '../stores/products.store';
 import { IProduct } from '../../interfaces';
 import { ProductService } from '../../services';
 import { firstValueFrom } from 'rxjs';
@@ -14,7 +14,7 @@ export class ProductAction {
   async loadProducts(): Promise<void> {
     const products = await firstValueFrom(this.productService.getProducts());
 
-    this.productsStore.update({ products });
+    this.productsStore.upsertMany(products);
   }
 
   async addProduct(productName: IProduct['name']): Promise<void> {
@@ -22,12 +22,7 @@ export class ProductAction {
 
     const product = await firstValueFrom(this.productService.addProduct(productName));
 
-    this.productsStore.update((state: IProductsState) => ({
-      products: [
-        ...state.products,
-        product,
-      ],
-    }));
+    this.productsStore.add(product, { prepend: true });
 
     this.productsStore.setLoading(false);
   }
@@ -37,11 +32,7 @@ export class ProductAction {
 
     const product = await firstValueFrom(this.productService.editProduct(productId, productName));
 
-    this.productsStore.update((state: IProductsState) => {
-      const products = state.products.map((prod) => prod.id === productId ? product : prod);
-
-      return { products };
-    });
+    this.productsStore.upsert(productId, product);
 
     this.productsStore.setLoading(false);
   }
@@ -51,9 +42,7 @@ export class ProductAction {
 
     await firstValueFrom(this.productService.removeProduct(productId));
 
-    this.productsStore.update((store: IProductsState) => ({
-      products: store.products.filter(({ id }) => id !== productId),
-    }));
+    this.productsStore.remove(productId);
 
     this.productsStore.setLoading(false);
   }

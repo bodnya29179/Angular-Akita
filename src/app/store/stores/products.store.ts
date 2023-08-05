@@ -1,24 +1,17 @@
 import { IProduct } from '../../interfaces';
-import { Store, StoreConfig } from '@datorama/akita';
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 
-export interface IProductsState {
-  products: IProduct[] | undefined;
-}
-
-function createInitialState(): IProductsState {
-  return {
-    products: undefined,
-  };
-}
+export interface IProductsState extends EntityState<IProduct, string> {}
 
 @StoreConfig({
   name: 'products',
   idKey: 'id',
 })
 @Injectable()
-export class ProductsStore extends Store<IProductsState> {
+export class ProductsStore extends EntityStore<IProductsState> {
   constructor() {
-    super(createInitialState());
+    /* If we want to pass init values, we can do it here: { <field>: <init value> } */
+    super(/* <here> */);
   }
 }
