@@ -15,13 +15,11 @@
 
 ## Installation
 
-- Way #1
-
 ```
-npm i @datorama/akita
+npm i @datorama/akita --save
 ```
 
-- Way #2
+### Devtools (optional)
 
 ```
 npm i @datorama/akita-ngdevtools --save
